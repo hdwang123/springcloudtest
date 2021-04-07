@@ -1,0 +1,60 @@
+spring:
+  application:
+    #应用名
+    name: register-center
+  freemarker:
+    template-loader-path: classpath:/templates/
+    prefer-file-system-access: false
+  #激活的配置，可运行时添加参数进行修改 -Dspring.profiles.active=peer2
+  profiles:
+    active: peer1
+
+# #Eureka独立模式配置，仅有一个注册中心节点
+#server:
+#  port: 8090
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    #仅仅作为注册中心，既不提供服务也不订阅服务
+#    registerWithEureka: false
+#    fetchRegistry: false
+#    #注册中心地址
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+
+# Eureka点对点模式，保证注册中心高可用，注册的实例信息会在点与点之间相互同步
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1.com:8091/eureka/,http://peer2.com:8092/eureka/,http://peer3.com:8093/eureka/
+
+---
+#每个注册中心节点不同的配置
+spring:
+  profiles: peer1
+server:
+  port: 8091
+eureka:
+  instance:
+    #在本机hosts中配置即可
+    hostname: peer1.com
+
+---
+spring:
+  profiles: peer2
+server:
+  port: 8092
+eureka:
+  instance:
+    hostname: peer2.com
+
+---
+spring:
+  profiles: peer3
+server:
+  port: 8093
+eureka:
+  instance:
+    hostname: peer3.com

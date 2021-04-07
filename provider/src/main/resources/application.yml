@@ -1,0 +1,22 @@
+spring:
+  application:
+    #应用名，也是eureka的服务名
+    name: provider
+  freemarker:
+    template-loader-path: classpath:/templates/
+    prefer-file-system-access: false
+
+server:
+  #运行时，添加参数-Dserver.port=8082运行新的provider实例
+  port: 8081
+
+eureka:
+  client:
+    #注册中心地址
+    serviceUrl:
+      #注册中心独立模式
+      #defaultZone: http://localhost:8090/eureka/
+      #注册中心点对点模式
+      defaultZone: http://peer1.com:8091/eureka/,http://peer2.com:8092/eureka/,http://peer3.com:8093/eureka/
+
+
